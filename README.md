@@ -36,4 +36,4 @@
     <h2>Credits</h2>
     <p>Loïc Drouet | <a href="https://www.loicdrouet.com" target="_blank">loicdrouet.com</a>.</p>
 </div>
-# v.1.0.1
+
