@@ -56,6 +56,9 @@ ECHO    14. Code Page - Encodage du texte affiché               - (Prompt)
 ECHO    15. Propriétès de Internet                              - (Window)
 ECHO    16. Applications au démarrage de Windows                - (Window)
 ECHO    17. Connexions réseaux                                  - (Window)
+ECHO    18. Liste Cache DNS Système                             - (Prompt)
+ECHO    19. Liste Cache DNS Système vers lsdns.txt (Bureau)     - (Prompt)
+ECHO    20. Effacer Cache DNS Système (Flush DNS)               - (Prompt)
 ECHO    ----------------------
 ECHO    99. Backend
 ECHO    ----------------------
@@ -81,6 +84,9 @@ IF /I "%choice1%"=="14" (GOTO chcp)
 IF /I "%choice1%"=="15" (GOTO inetcpl)
 IF /I "%choice1%"=="16" (GOTO startupapps)
 IF /I "%choice1%"=="17" (GOTO ncpacpl)
+IF /I "%choice1%"=="18" (GOTO lsdns)
+IF /I "%choice1%"=="19" (GOTO lsdnsfile)
+IF /I "%choice1%"=="20" (GOTO flushdns)
 IF /I "%choice1%"=="99" (GOTO backendmenu)
 IF /I "%choice1%"=="00" (GOTO quitmenu)
 
@@ -232,6 +238,41 @@ GOTO startmenu
 :ncpacpl
 ncpa.cpl
 GOTO startmenu
+
+:: 018 - Liste Cache DNS Système
+:lsdns
+CLS
+ipconfig /displaydns
+CALL :whenready
+GOTO startmenu
+
+:: 019 - Liste Cache DNS Système vers lsdns.txt (Bureau)
+:lsdnsfile
+CLS
+for /f "tokens=1,2,3 delims=/ " %%a in ('date /t') do SET saveDate=%%c%%b%%a
+for /f "tokens=1,2,3 delims=:" %%a in ('time /t') do SET hours=%%a
+SET minutes=%time:~3,2%
+SET seconds=%time:~6,2%
+SET saveTime=%hours%%minutes%%seconds%
+ipconfig /displaydns > C:%HOMEPATH%\OneDrive\Bureau\lsdns-%saveDate%-%saveTime%.txt
+ECHO    ----------------------------------------------------------------------
+ECHO    Le fichier lsdns-%saveDate%-%saveTime%.txt a été généré sur le bureau.
+ECHO    ----------------------------------------------------------------------
+CALL :whenready
+GOTO startmenu
+
+:: 020 - Effacer Cache DNS Système (Flush DNS) 
+:flushdns
+CLS
+ipconfig /flushdns
+CALL :whenready
+GOTO startmenu
+
+:: TO BE CONTINUED HERE
+:: TO BE CONTINUED HERE
+:: TO BE CONTINUED HERE
+:: TO BE CONTINUED HERE
+:: TO BE CONTINUED HERE
 
 :: 099 - Backend
 :backendmenu
