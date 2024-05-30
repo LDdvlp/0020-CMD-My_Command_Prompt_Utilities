@@ -59,6 +59,8 @@ ECHO    17. Connexions réseaux                                  - (Window)
 ECHO    18. Liste Cache DNS Système                             - (Prompt)
 ECHO    19. Liste Cache DNS Système vers lsdns.txt (Bureau)     - (Prompt)
 ECHO    20. Effacer Cache DNS Système (Flush DNS)               - (Prompt)
+ECHO    21. Windows Printers  - [Admin Only Started]            - (Prompt)
+ECHO    22. Windows Printers Uninstall - [Admin Only Started]   - (Prompt)
 ECHO    ----------------------
 ECHO    99. Backend
 ECHO    ----------------------
@@ -87,6 +89,8 @@ IF /I "%choice1%"=="17" (GOTO ncpacpl)
 IF /I "%choice1%"=="18" (GOTO lsdns)
 IF /I "%choice1%"=="19" (GOTO lsdnsfile)
 IF /I "%choice1%"=="20" (GOTO flushdns)
+IF /I "%choice1%"=="21" (GOTO winprintersprompt)
+IF /I "%choice1%"=="22" (GOTO winprintersuninstallprompt)
 IF /I "%choice1%"=="99" (GOTO backendmenu)
 IF /I "%choice1%"=="00" (GOTO quitmenu)
 
@@ -265,6 +269,34 @@ GOTO startmenu
 :flushdns
 CLS
 ipconfig /flushdns
+CALL :whenready
+GOTO startmenu
+
+:: 021 - Windows Printers Prompt
+:winprintersprompt
+CLS
+ECHO    ******************************
+ECHO    *   Imprimantes installées   *
+ECHO    ******************************
+ECHO.
+wmic printer get name
+CALL :whenready
+GOTO startmenu
+
+:: 022 - Windows Printers Prompt
+:winprintersuninstallprompt
+CLS
+ECHO    ******************************
+ECHO    *   Imprimantes installées   *
+ECHO    ******************************
+ECHO.
+wmic printer get name
+SET imprimante=
+SET /p imprimante=Entrer le nom de l'imprimante à désinstaller : 
+ECHO.
+ECHO Désinstallation de l'imprimante : %imprimante%
+ECHO.
+printui.exe /dl /n "%imprimante%"
 CALL :whenready
 GOTO startmenu
 
